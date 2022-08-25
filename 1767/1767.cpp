@@ -61,7 +61,7 @@ void mochila (int n, Pacote pac[]){
             } else {
                 if (pac[i].peso > p) { //quando peso do item e maior que Peso 
                     matriz[i][p] = matriz[i-1][p]; 
-                } else { //quando peso e menor que Peso MAX
+                } else { //quando peso do item e menor que Peso
                     matriz[i][p] = max(matriz[i-1][p - pac[i].peso] + pac[i].qt, matriz[i-1][p]);
                 }
             }

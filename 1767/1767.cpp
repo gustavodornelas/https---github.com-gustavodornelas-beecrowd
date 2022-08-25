@@ -47,63 +47,66 @@ int max(int x, int y) { //Retorna o maior valor
 
 void mochila (int n, Pacote pac[]){
 
-    int brinquedos = 0;
-    int peso = 0;
-    int sobra = n;
     int i, p; // i = itens | p = pesos
 
     //Matriz para salvar os resultados
-        int matriz[n + 1][MAX_PESO + 1];
+    int matriz[n + 1][MAX_PESO + 1];
 
-        //knapsack
-        for (i = 0; i <= n; i++) { //Percorre os Itens
-            for (p = 0; p <= MAX_PESO; p++) { //Percorre os Pesos
+    //knapsack
+    for (i = 0; i <= n; i++) { //Percorre os Itens
+        for (p = 0; p <= MAX_PESO; p++) { //Percorre os Pesos
 
-                if (i == 0 || p == 0) { //Zerar primeira linha e primeira coluna
-                    matriz[i][p] = 0;
-                } else {
-                    if (pac[i].peso > p) { //quando peso do item e maior que Peso 
-                        matriz[i][p] = matriz[i-1][p]; 
-                    } else { //quando peso e menor que Peso MAX
-                        matriz[i][p] = max(matriz[i-1][p - pac[i].peso] + pac[i].qt, matriz[i-1][p]);
-                    }
+            if (i == 0 || p == 0) { //Zerar primeira linha e primeira coluna
+                matriz[i][p] = 0;
+            } else {
+                if (pac[i].peso > p) { //quando peso do item e maior que Peso 
+                    matriz[i][p] = matriz[i-1][p]; 
+                } else { //quando peso e menor que Peso MAX
+                    matriz[i][p] = max(matriz[i-1][p - pac[i].peso] + pac[i].qt, matriz[i-1][p]);
                 }
             }
         }
+    }
 
-        //Recebendo as informações de quantidade de brinquedos, peso da mochila e quantos pacotes sobraram
-        brinquedos = matriz[n][MAX_PESO]; //a quantidade de brinquedos recebe o ultimo valor da matriz
-        for(i = n, p = MAX_PESO, peso = 0; i > 0; i--){ //percorre a ultima linha da matriz
-			if(matriz[i][p] != matriz[i-1][p]){ //se o valor da ultima linha for diferente do valor acima
-				sobra--; 
-				peso += pac[i].peso;
-				if(p - pac[i].peso >= 0) //percorre as colunas p da ultima linha até p ser igual a 0
-					p -= pac[i].peso;
-			}
+    //Recebendo as informações de quantidade de brinquedos, peso da mochila e quantos pacotes sobraram
+
+    int brinquedos = 0;
+    int peso = 0;
+    int sobra = n;
+
+    brinquedos = matriz[n][MAX_PESO]; //a quantidade de brinquedos recebe o ultimo valor da matriz
+    for(i = n, p = MAX_PESO, peso = 0; i > 0; i--){ //percorre a ultima linha da matriz
+        if(matriz[i][p] != matriz[i-1][p]){ //se o valor da ultima linha for diferente do valor acima
+            sobra--; 
+            peso += pac[i].peso;
+            if(p - pac[i].peso >= 0) //percorre as colunas p da ultima linha até p ser igual a 0
+                p -= pac[i].peso;
         }
-        
-        cout << brinquedos << " brinquedos" << endl;
-        cout << "Peso: " << peso << " kg" << endl;
-        cout << "sobra(m) " << sobra << " pacote(s)" << endl << endl;
+    }
+    
+    cout << brinquedos << " brinquedos" << endl;
+    cout << "Peso: " << peso << " kg" << endl;
+    cout << "sobra(m) " << sobra << " pacote(s)" << endl << endl;
 }
 
 int main () {
 
     int n;
 
-    cin >> n;
+    cin >> n; //numero de casos de teste
 
     while(n-- > 0) {
         int pac;
 
-        cin >> pac;
-        Pacote pacotes[pac];
+        cin >> pac; //numero de pacotes
+
+        Pacote pacotes[pac]; //vetor com pacotes armazenados
 
         for (int i = 0; i < pac; i++) { //Recebendo os pacotes
             cin >> pacotes[i].qt >> pacotes[i].peso;
         }
 
-        mochila(pac, pacotes);
+        mochila(pac, pacotes); //iniciando o problema da mochila com a quantidade de pacotes e o vetor de pacotes
     }
 
     return 0;
